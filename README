@@ -1,0 +1,11 @@
+==Goal==
+
+This library aims to provide a manipulative model for a labled directed graph,
+as an alternative for SEXP, XML, or RDF.
+
+==Symposis==
+
+ * Every node and edge has a label. A label is a Scheme object.
+ * Sibling nodes are stored in their order.
+ * Unlike SEXPs and XMLs, a node can have more than one nodes as its parents.
+

@@ -1,0 +1,23 @@
+(load "./xgp.scm")
+(define (input str)
+  (display "[32m")
+  (display str)
+  (display ">[00m ")
+  (flush)
+  (with-input-from-string (read-line)
+    (cut port-map identity read)))
+
+(define (prompt G)
+  (define (get name)
+    (car (xgp-nodes-by-label G name)))
+  (while (input "graph") => i
+    (case (car i)
+      ((help) (display "command := c(reate) /node/ | d(elete) /node/ | j(oin) /node1/ /node2/ | p(rint) /node/ | q(uit)") (newline))
+      ((exit quit q)       (exit))
+      ((new make create c) (xgp-create-node G (cadr i)))
+      ((delete remove d)   (xgp-remove-node G (get (cadr i))))
+      ((join j)            (apply (pa$ xgp-create-edge G (get (cadr i)) (get (caddr i))) (cdddr i)))
+      ((print p) (print (format " ~a -> ~a -> ~a" (map (pa$ xgp-label G) (xgp-parents G (get (cadr i)))) (cadr i) (map (pa$ xgp-label G) (xgp-children G (get (cadr i))))))))))
+
+(define (main args)
+  (prompt (xgp-create))) 
